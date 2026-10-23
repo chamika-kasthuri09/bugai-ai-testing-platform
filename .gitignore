@@ -1,0 +1,33 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+pytest-cache-files-*/
+.coverage
+htmlcov/
+node_modules/
+dist/
+.cache/
+artifacts/
+playwright-report/
+test-results/
+*.log
+.DS_Store
+Thumbs.db
+# Python tooling
+.mypy_cache/
+.ruff_cache/
+.pyright/
+
+# IDE settings
+.idea/
+
+# Local databases
+*.sqlite3
+
+# Frontend build tooling
+.next/
+.vite/

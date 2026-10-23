@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "case_id": "00000000-0000-4000-8000-000000000001",
+  "revision_id": "00000000-0000-4000-8000-000000000002",
+  "title": "Required email blocks empty submission",
+  "goal": "Verify required email feedback",
+  "category": "form_validation",
+  "discovery_snapshot_id": "00000000-0000-4000-8000-000000000003",
+  "target_origin": "http://127.0.0.1:8080",
+  "requirement_revision_ids": [
+    "00000000-0000-4000-8000-000000000004"
+  ],
+  "preconditions": [
+    "Fresh controlled fixture page"
+  ],
+  "steps": [
+    {
+      "id": "s1",
+      "action": "navigate",
+      "path": "/"
+    },
+    {
+      "id": "s2",
+      "action": "submit",
+      "locator": {
+        "kind": "element_id",
+        "element_id": "signup"
+      }
+    },
+    {
+      "id": "s3",
+      "assertion": "text",
+      "locator": {
+        "kind": "element_id",
+        "element_id": "signup-status"
+      },
+      "expected": "Email is required"
+    }
+  ],
+  "expected_outcome": "Email is required",
+  "risk": "low"
+}

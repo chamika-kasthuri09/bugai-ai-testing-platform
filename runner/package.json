@@ -1,0 +1,11 @@
+{
+  "name": "@bugai/runner",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "smoke": "tsx src/smoke.ts"
+  },
+  "dependencies": { "playwright": "1.64.1" },
+  "devDependencies": { "tsx": "4.23.15", "typescript": "7.0.2" }
+}

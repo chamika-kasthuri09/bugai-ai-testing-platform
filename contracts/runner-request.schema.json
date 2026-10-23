@@ -1,0 +1,86 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "approval_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "spec_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "requirements_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "scope_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "target_profile": {
+      "const": "fixture"
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "step_timeout_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5000
+        },
+        "navigation_timeout_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "case_timeout_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60000
+        },
+        "max_requests": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "max_response_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10485760
+        }
+      },
+      "required": [
+        "step_timeout_ms",
+        "navigation_timeout_ms",
+        "case_timeout_ms",
+        "max_requests",
+        "max_response_bytes"
+      ]
+    },
+    "test_case": {
+      "$ref": "test-case.schema.json"
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "approval_id",
+    "spec_sha256",
+    "requirements_sha256",
+    "scope_sha256",
+    "target_profile",
+    "limits",
+    "test_case"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bugai.invalid/contracts/runner-request.schema.json"
+}

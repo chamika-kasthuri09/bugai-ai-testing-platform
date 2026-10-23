@@ -1,0 +1,24 @@
+name: Foundation checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: 0.12.5
+          enable-cache: true
+      - run: npm install --global npm@11.19.0
+      - run: npm ci
+      - run: uv sync --frozen
+      - run: npx playwright install --with-deps chromium
+      - run: uv run python scripts/check.py --browser
+      - run: docker compose config --quiet

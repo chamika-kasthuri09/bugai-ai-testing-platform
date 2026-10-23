@@ -1,0 +1,169 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "revision_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed",
+        "error",
+        "cancelled"
+      ]
+    },
+    "failure_kind": {
+      "enum": [
+        null,
+        "invalid_spec",
+        "unsafe_target",
+        "network_error",
+        "selector_error",
+        "assertion_failure",
+        "infra_failure",
+        "timeout",
+        "cancelled",
+        "insufficient_evidence"
+      ]
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 60000
+    },
+    "artifacts": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+\\.(png|zip|json|txt)$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5242880
+          },
+          "mime": {
+            "enum": [
+              "image/png",
+              "application/zip",
+              "application/json",
+              "text/plain"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "sha256",
+          "size_bytes",
+          "mime"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "revision_id",
+    "status",
+    "failure_kind",
+    "duration_ms",
+    "artifacts"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bugai.invalid/contracts/runner-result.schema.json",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "passed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "failure_kind": {
+            "const": null
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "failed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "failure_kind": {
+            "const": "assertion_failure"
+          },
+          "artifacts": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "cancelled"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "failure_kind": {
+            "const": "cancelled"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "error"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "failure_kind": {
+            "enum": [
+              "invalid_spec",
+              "unsafe_target",
+              "network_error",
+              "selector_error",
+              "infra_failure",
+              "timeout",
+              "insufficient_evidence"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

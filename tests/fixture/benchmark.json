@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "reset": "Reload the stateless page in a fresh browser context; no database or persistent storage exists.",
+  "scenarios": [
+    {"id": "empty-email", "email": "", "age": 19, "expected": "Email is required", "classification": "correct"},
+    {"id": "invalid-email", "email": "invalid", "age": 19, "expected": "Email is invalid", "classification": "correct"},
+    {"id": "valid-form", "email": "qa@example.test", "age": 19, "expected": "Submitted", "classification": "correct"},
+    {"id": "lower-boundary", "email": "qa@example.test", "age": 18, "expected": "Submitted", "classification": "known_defect"},
+    {"id": "upper-boundary", "email": "qa@example.test", "age": 120, "expected": "Submitted", "classification": "correct"},
+    {"id": "above-maximum", "email": "qa@example.test", "age": 121, "expected": "Age must be between 18 and 120", "classification": "correct"},
+    {"id": "broken-link", "path": "/missing", "expected_status": 200, "classification": "known_defect"},
+    {"id": "unavailable-server", "condition": "fixture stopped", "classification": "infra_failure"}
+  ]
+}
